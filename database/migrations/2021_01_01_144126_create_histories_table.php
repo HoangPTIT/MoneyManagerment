@@ -15,7 +15,6 @@ class CreateHistoriesTable extends Migration
     {
         Schema::create('histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('timeline_id');
             $table->foreignId('type_id');
             $table->text('content');
             $table->double('cost');
