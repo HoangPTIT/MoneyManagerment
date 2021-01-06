@@ -3,12 +3,14 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use SoftDeletes;
 
     protected $table = 'users';
 
@@ -18,16 +20,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'role_id',
         'full_name',
         'display_name',
         'birthday',
-        'phone',
         'address',
         'avatar',
-        'email',
-        'password',
-        'remember_token',
     ];
 
     /**
@@ -47,4 +44,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the role for the user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * Get the receives for the user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function receives()
+    {
+        return $this->hasMany(Receive::class);
+    }
 }
